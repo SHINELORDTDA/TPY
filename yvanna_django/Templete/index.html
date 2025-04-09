@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Quartiet et Maison</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    {% if messages %}
+<ul>
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+    <h1 class="page-title">Création de Quartiers et Maisons</h1>
+
+    <div class="form-container">
+        <h2>Que souhaitez-vous créer ?</h2>
+
+        <form id="maisonForm" method="post" action="{% url 'creer_maison' %}">
+            {% csrf_token %}
+            <button href="{% url 'formulaire_maison' %}" class="btn btn-maison">Créer une Maison</button>
+        </form>
+
+        <form method="post" action="{% url 'creer_quartier' %}">
+            {% csrf_token %}
+            <button href="{% url 'formulaire_quartier' %}" class="btn btn-quartier">Créer un Quartier</button>
+
+        </form>
+    </div>
+
+    <!-- Boîte de dialogue personnalisée -->
+    <div id="overlay"></div>
+    <div id="alertBox">
+        <p>Veuillez d'abord créer un quartier avant de créer une maison.</p>
+        <button onclick="closeAlert()">Suivant</button>
+    </div>
+    <script>
+        const quartierExiste = "{{ quartier_existe|yesno:'true,false' }}" === "true";
+    
+        document.getElementById('maisonForm').addEventListener('submit', function(event) {
+            if (!quartierExiste) {
+                event.preventDefault();
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('alertBox').style.display = 'block';
+            }
+        });
+    
+        function closeAlert() {
+            document.getElementById('alertBox').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

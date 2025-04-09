@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quartier</title>
+</head>
+<body>
+    <div class="form-box">
+        <h2>Créer un Quartier</h2>
+        <form method="post" action="{% url 'enregistrer_quartier' %}">
+            {% csrf_token %}
+            <label for="id">ID</label>
+            <input type="text" name="id" id="id" required>
+
+            <label for="nom">Nom du Quartier</label>
+            <input type="text" name="nom" id="nom" required>
+
+            <label for="superficie">Superficie (m²)</label>
+            <input type="number" name="superficie" id="superficie" required>
+
+            <label for="adresse">Adresse</label>
+            <input type="text" name="adresse" id="adresse" required>
+
+            <label for="nb_maisons">Nombre de Maisons</label>
+            <input type="number" name="nb_maisons" id="nb_maisons" required>
+
+            <button type="submit">Enregistrer</button>
+        </form>
+    </div>
+
+    <a href="{% url 'home' %}" style="text-decoration:none;">
+        <button type="button" style="margin-bottom: 20px; background-color:#607d8b; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
+            ← Retour à l’accueil
+        </button>
+    </a>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function(e) {
+            const nom = document.getElementById("nom").value.trim();
+            const superficie = document.getElementById("superficie").value;
+            const nbMaisons = document.getElementById("nb_maisons").value;
+    
+            if (!nom || superficie <= 0 || nbMaisons < 0) {
+                e.preventDefault();
+                alert("Veuillez remplir correctement tous les champs.");
+            }
+        });
+    </script>
+    
+</body>
+</html>

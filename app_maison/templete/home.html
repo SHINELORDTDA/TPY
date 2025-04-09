@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maison</title>
+</head>
+<body>
+    
+    <a href="{% url 'home' %}">
+        <button type="button" class="back-button">← Retour à l’accueil</button>
+    </a>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    <div class="form-box">
+        <h2>Créer une Maison</h2>
+        <form method="post" action="{% url 'enregistrer_maison' %}">
+            {% csrf_token %}
+
+            <label for="id">ID</label>
+            <input type="text" name="id" id="id" required>
+
+            <label for="proprietaire">Nom du Propriétaire</label>
+            <input type="text" name="proprietaire" id="proprietaire" required>
+
+            <label for="superficie">Superficie (m²)</label>
+            <input type="number" name="superficie" id="superficie" required>
+
+            <label for="adresse">Adresse</label>
+            <input type="text" name="adresse" id="adresse" required>
+
+            <label for="prix">Prix (€)</label>
+            <input type="number" name="prix" id="prix" required>
+
+            <label for="chambres">Nombre de Chambres</label>
+            <input type="number" name="chambres" id="chambres" required>
+
+            <label for="quartier">Quartier</label>
+            <select name="quartier" id="quartier" required>
+                {% for quartier in quartiers %}
+                    <option value="{{ quartier.id }}">{{ quartier.nom }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Enregistrer</button>
+        </form>
+    </div>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function(e) {
+            const proprio = document.getElementById("proprietaire").value.trim();
+            const superficie = parseFloat(document.getElementById("superficie").value);
+            const prix = parseFloat(document.getElementById("prix").value);
+            const chambres = parseInt(document.getElementById("chambres").value);
+
+            if (!proprio || superficie <= 0 || prix <= 0 || chambres < 1) {
+                e.preventDefault();
+                alert("Veuillez remplir correctement tous les champs.");
+            }
+        });
+    </script>
+</body>
+</html>
